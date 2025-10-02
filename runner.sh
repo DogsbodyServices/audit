@@ -13,7 +13,7 @@ for host in cpa-app14.prod.cloud.local cpa-auth-proxy.prod.cloud.local mwf-mgrou
   mkdir -p "remote_audits/$host-$DATE/audit_outputs"
   
   # Pass the date to the remote script and run it
-  ssh aaron.watson@$host "DATE=$DATE bash -s" < linux_audit_remote.sh
+  ssh aaron.watson@$host -o StrictHostKeyChecking=accept-new "DATE=$DATE bash -s" < linux_audit_remote.sh
   
   # Copy the audit outputs back to local machine
   scp -r aaron.watson@$host:~/audit_outputs/* "remote_audits/$host-$DATE/audit_outputs/"
