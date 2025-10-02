@@ -6,7 +6,7 @@ DATE=$(date +%Y-%m-%d)
 # Create local directories for each host
 mkdir -p remote_audits screenshots
 
-for host in 10duke-app3.stage.cloud.local 10duke-app4.stage.cloud.local; do
+for host in cpa-app13.prod.cloud.local cpa-auth-proxy.prod.cloud.local mwf-mgroup.prod.cloud.local mwf-mgroup2.prod.cloud.local; do
   echo "Auditing $host..."
   
   # Create host-specific directory with date
