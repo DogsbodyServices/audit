@@ -3,6 +3,15 @@
 # Directory setup
 mkdir -p audit_outputs screenshots
 
+# Function to redact shadow file passwords
+function redact_shadow_passwords() {
+    local input_file="$1"
+    local output_file="$2"
+    
+    # Read shadow file and replace password hashes with [REDACTED]
+    sudo cat "$input_file" | sed 's/:[^:]*:/:***REDACTED***:/2' > "$output_file"
+}
+
 # Function to run command, save output, open for screenshot, and take screenshot
 function audit_and_screenshot() {
     local cmd="$1"
@@ -22,8 +31,25 @@ function audit_and_screenshot() {
     sleep 1
 }
 
-# 1. /etc/shadow
-audit_and_screenshot "sudo cat /etc/shadow" "audit_outputs/etc_shadow.txt" "screenshots/etc_shadow.png" "/etc/shadow file"
+# Special function for shadow file with redaction
+function audit_and_screenshot_shadow() {
+    local input_file="$1"
+    local output_file="$2"
+    local screenshot_file="$3"
+    local description="$4"
+
+    echo "==== $description ====" | tee "$output_file"
+    redact_shadow_passwords "$input_file" "/tmp/shadow_redacted"
+    cat "/tmp/shadow_redacted" | tee -a "$output_file"
+    rm -f "/tmp/shadow_redacted"
+    
+    # Take full desktop screenshot (includes clock)
+    gnome-screenshot -f "$screenshot_file"
+    sleep 1
+}
+
+# 1. /etc/shadow (with password redaction)
+audit_and_screenshot_shadow "/etc/shadow" "audit_outputs/etc_shadow.txt" "screenshots/etc_shadow.png" "/etc/shadow file (passwords redacted)"
 
 # 2. /etc/login.defs
 audit_and_screenshot "sudo cat /etc/login.defs" "audit_outputs/login_defs.txt" "screenshots/login_defs.png" "/etc/login.defs file"
