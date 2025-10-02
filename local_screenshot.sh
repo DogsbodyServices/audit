@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Local screenshot script to generate screenshots from collected audit data
+# Get current date for finding timestamped files
+DATE=$(date +%Y-%m-%d)
 mkdir -p screenshots
 
 function screenshot_file() {
@@ -39,21 +41,21 @@ for host_dir in remote_audits/*/; do
         
         mkdir -p "screenshots/$host"
         
-        # Screenshot each audit file
-        screenshot_file "$host_dir/audit_outputs/etc_shadow.txt" "$host/etc_shadow.png" "$host /etc/shadow file"
-        screenshot_file "$host_dir/audit_outputs/login_defs.txt" "$host/login_defs.png" "$host /etc/login.defs file"
-        screenshot_file "$host_dir/audit_outputs/pam_system_auth.txt" "$host/pam_system_auth.png" "$host PAM system-auth file"
-        screenshot_file "$host_dir/audit_outputs/hosts_equiv.txt" "$host/hosts_equiv.png" "$host /etc/hosts.equiv file"
-        screenshot_file "$host_dir/audit_outputs/passwd.txt" "$host/passwd.png" "$host /etc/passwd file"
-        screenshot_file "$host_dir/audit_outputs/group.txt" "$host/group.png" "$host /etc/group file"
-        screenshot_file "$host_dir/audit_outputs/sulog.txt" "$host/sulog.png" "$host /var/adm/sulog file"
-        screenshot_file "$host_dir/audit_outputs/sudoers.txt" "$host/sudoers.png" "$host /etc/sudoers file"
-        screenshot_file "$host_dir/audit_outputs/securetty.txt" "$host/securetty.png" "$host /etc/securetty file"
-        screenshot_file "$host_dir/audit_outputs/pam_login.txt" "$host/pam_login.png" "$host PAM login file"
-        screenshot_file "$host_dir/audit_outputs/patch_list.txt" "$host/patch_list.png" "$host Installed patches"
+        # Screenshot each audit file (look for timestamped files)
+        screenshot_file "$host_dir/audit_outputs/etc_shadow_$DATE.txt" "$host/etc_shadow_$DATE.png" "$host /etc/shadow file"
+        screenshot_file "$host_dir/audit_outputs/login_defs_$DATE.txt" "$host/login_defs_$DATE.png" "$host /etc/login.defs file"
+        screenshot_file "$host_dir/audit_outputs/pam_system_auth_$DATE.txt" "$host/pam_system_auth_$DATE.png" "$host PAM system-auth file"
+        screenshot_file "$host_dir/audit_outputs/hosts_equiv_$DATE.txt" "$host/hosts_equiv_$DATE.png" "$host /etc/hosts.equiv file"
+        screenshot_file "$host_dir/audit_outputs/passwd_$DATE.txt" "$host/passwd_$DATE.png" "$host /etc/passwd file"
+        screenshot_file "$host_dir/audit_outputs/group_$DATE.txt" "$host/group_$DATE.png" "$host /etc/group file"
+        screenshot_file "$host_dir/audit_outputs/sulog_$DATE.txt" "$host/sulog_$DATE.png" "$host /var/adm/sulog file"
+        screenshot_file "$host_dir/audit_outputs/sudoers_$DATE.txt" "$host/sudoers_$DATE.png" "$host /etc/sudoers file"
+        screenshot_file "$host_dir/audit_outputs/securetty_$DATE.txt" "$host/securetty_$DATE.png" "$host /etc/securetty file"
+        screenshot_file "$host_dir/audit_outputs/pam_login_$DATE.txt" "$host/pam_login_$DATE.png" "$host PAM login file"
+        screenshot_file "$host_dir/audit_outputs/patch_list_$DATE.txt" "$host/patch_list_$DATE.png" "$host Installed patches"
         
         # Screenshot permission files
-        for perm_file in "$host_dir"/audit_outputs/perm_*.txt; do
+        for perm_file in "$host_dir"/audit_outputs/perm_*_$DATE.txt; do
             if [ -f "$perm_file" ]; then
                 filename=$(basename "$perm_file" .txt)
                 screenshot_file "$perm_file" "$host/$filename.png" "$host $filename"
