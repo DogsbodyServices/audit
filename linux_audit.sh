@@ -9,7 +9,8 @@ function redact_shadow_passwords() {
     local output_file="$2"
     
     # Read shadow file and replace password hashes with [REDACTED]
-    sudo cat "$input_file" | sed 's/:[^:]*:/:***REDACTED***:/2' > "$output_file"
+    # Format: username:password:lastchange:min:max:warn:inactive:expire:reserved
+    sudo cat "$input_file" | sed 's/\([^:]*\):\([^:]*\):/\1:***REDACTED***:/' > "$output_file"
 }
 
 # Function to run command, save output, open for screenshot, and take screenshot
