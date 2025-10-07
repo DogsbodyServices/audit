@@ -1,0 +1,9 @@
+# SQL Server instances to audit (one per line)
+# Format: ServerName\InstanceName or ServerName (for default instance)
+# Examples:
+# SQL01\PROD
+# SQL02.domain.com
+# localhost
+# 192.168.1.100\SQLEXPRESS
+
+localhost
